@@ -1,4 +1,4 @@
-query = SELECT left(domain.name,1) || '/' ||  domains.name || '/' || login || '@' || domains.name || '/' 
+query = SELECT left(domains.name,1) || '/' ||  domains.name || '/' || login || '@' || domains.name || '/' 
 	FROM passwd, domains WHERE domainid = domains.id
         AND login = '%u' AND domains.name = '%d' 
         AND passwd.type & 2 = 2 
