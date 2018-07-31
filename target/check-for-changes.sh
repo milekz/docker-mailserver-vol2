@@ -62,7 +62,7 @@ else
     sed -i -e '/\!include auth-passwdfile\.inc/s/^/#/' /etc/dovecot/conf.d/10-auth.conf
     sed -i -e '/\!include auth-sql\.conf\.ext/s/^#//' /etc/dovecot/conf.d/10-auth.conf
     sed -i -e '/mail_location/s/^/#/' /etc/dovecot/conf.d/10-mail.conf
-    echo "mail_location = maildir:/var/mail/%d/%n@%d" >> /etc/dovecot/conf.d/10-mail.conf
+    echo "mail_location = maildir:/var/mail/%1d/%d/%n@%d" >> /etc/dovecot/conf.d/10-mail.conf
     #
     supervisorctl restart dovecot
     supervisorctl restart saslauthd_pam
@@ -129,23 +129,23 @@ if ! [ $resu_acc = "OK" ] || ! [ $resu_vir = "OK" ]; then
 			user=$(echo ${login} | cut -d @ -f1)
 			domain=$(echo ${login} | cut -d @ -f2)
 			# Let's go!
-			echo "${login} ${domain}/${user}/" >> /etc/postfix/vmailbox
+			##echo "${login} ${domain}/${user}/" >> /etc/postfix/vmailbox
 			# User database for dovecot has the following format:
 			# user:password:uid:gid:(gecos):home:(shell):extra_fields
 			# Example :
 			# ${login}:${pass}:5000:5000::/var/mail/${domain}/${user}::userdb_mail=maildir:/var/mail/${domain}/${user}
-			echo "${login}:${pass}:5000:5000::/var/mail/${domain}/${user}::" >> /etc/dovecot/userdb
-			mkdir -p /var/mail/${domain}
-			if [ ! -d "/var/mail/${domain}/${user}" ]; then
-				maildirmake.dovecot "/var/mail/${domain}/${user}"
-				maildirmake.dovecot "/var/mail/${domain}/${user}/.Sent"
-				maildirmake.dovecot "/var/mail/${domain}/${user}/.Trash"
-				maildirmake.dovecot "/var/mail/${domain}/${user}/.Drafts"
-				echo -e "INBOX\nSent\nTrash\nDrafts" >> "/var/mail/${domain}/${user}/subscriptions"
-				touch "/var/mail/${domain}/${user}/.Sent/maildirfolder"
-			fi
+			##echo "${login}:${pass}:5000:5000::/var/mail/${domain}/${user}::" >> /etc/dovecot/userdb
+			##mkdir -p /var/mail/${domain}
+			##if [ ! -d "/var/mail/${domain}/${user}" ]; then
+			##	maildirmake.dovecot "/var/mail/${domain}/${user}"
+			##	maildirmake.dovecot "/var/mail/${domain}/${user}/.Sent"
+			##	maildirmake.dovecot "/var/mail/${domain}/${user}/.Trash"
+			##	maildirmake.dovecot "/var/mail/${domain}/${user}/.Drafts"
+			##	echo -e "INBOX\nSent\nTrash\nDrafts" >> "/var/mail/${domain}/${user}/subscriptions"
+			##	touch "/var/mail/${domain}/${user}/.Sent/maildirfolder"
+			##fi
 			# Copy user provided sieve file, if present
-			test -e /tmp/docker-mailserver/${login}.dovecot.sieve && cp /tmp/docker-mailserver/${login}.dovecot.sieve /var/mail/${domain}/${user}/.dovecot.sieve
+			##test -e /tmp/docker-mailserver/${login}.dovecot.sieve && cp /tmp/docker-mailserver/${login}.dovecot.sieve /var/mail/${domain}/${user}/.dovecot.sieve
 			echo ${domain} >> /tmp/vhost.tmp
 		done
 	fi
