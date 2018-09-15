@@ -106,7 +106,8 @@ RUN echo "0 0,6,12,18 * * * /usr/bin/freshclam --quiet" > /etc/cron.d/freshclam 
   sed -i 's/Foreground false/Foreground true/g' /etc/clamav/clamd.conf && \
   sed -i 's/AllowSupplementaryGroups false/AllowSupplementaryGroups true/g' /etc/clamav/clamd.conf && \
   mkdir /var/run/clamav && \
-  chown -R clamav:root /var/run/clamav
+  chown -R clamav:root /var/run/clamav && \
+  sed -i -e 's/17 \*/1 */' -e 's/25 6/2 0/'  -e 's/47 6/4 0/'  -e 's/52 6/6 0/' /etc/crontab 
 
 # Configures Dovecot
 COPY target/dovecot/auth-passwdfile.inc target/dovecot/??-*.conf /etc/dovecot/conf.d/
