@@ -8,6 +8,10 @@ log_date=$(date +"%Y-%m-%d %H:%M:%S ")
 
 echo "${log_date} Start check-for-changes script."
 
+
+#crontab adjust
+sed -i -e 's/17 \*/1 */' -e 's/25 6/2 0/'  -e 's/47 6/4 0/'  -e 's/52 6/6 0/' /etc/crontab 
+
 #pgsql stuff here
 
 if [ ! -v USE_PGSQL_DATABASE ] #note the lack of a $ sigil
